@@ -8,7 +8,12 @@
   </head>
   <body>
     <div id="output"></div>
-    <input id="input" onkeypress="KeyPress(event)" />
+    <input
+      id="input"
+      onkeypress="KeyPress(event)"
+      onkeydown="KeyDown()"
+      onkeyup="KeyDown()"
+    />
     <script>
       document.getElementById("input").focus();
     </script>
