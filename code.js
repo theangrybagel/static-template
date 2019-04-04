@@ -10,13 +10,15 @@ function AddFile(file) {
     var dir = disk;
     var p = currentPath.split(".");
     for (var i = 0; i < p.length; i++) {
-      returnTxt += "[" + p[i].toLowerCase();
+      returnTxt += "['" + p[i].toLowerCase() + "']";
       endAmt = i + 1;
     }
-    for (var i = 0; i < endAmt; i++) {
-      returnTxt += "]";
-    }
-    eval(
+    if (1 == 2)
+      for (var i = 0; i < endAmt; i++) {
+        returnTxt += "]";
+      }
+    console.log(returnTxt);
+    console.log(
       "disk" +
         returnTxt +
         "." +
@@ -26,6 +28,17 @@ function AddFile(file) {
         "', type: " +
         file.type +
         " }"
+    );
+    eval(
+      "disk" +
+        returnTxt +
+        "." +
+        file.name +
+        " = {name: '" +
+        file.name +
+        "', type: '" +
+        file.type +
+        "' };"
     );
     console.log(returnTxt);
     console.log(disk);
