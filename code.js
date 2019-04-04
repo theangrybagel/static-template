@@ -17,8 +17,8 @@ function AddFile(file) {
       for (var i = 0; i < endAmt; i++) {
         returnTxt += "]";
       }
-    console.log(returnTxt);
-    console.log(
+    //console.log(returnTxt);
+    /*console.log(
       "disk" +
         returnTxt +
         "." +
@@ -28,7 +28,7 @@ function AddFile(file) {
         "', type: " +
         file.type +
         " }"
-    );
+    );*/
     eval(
       "disk" +
         returnTxt +
@@ -40,26 +40,27 @@ function AddFile(file) {
         file.type +
         "' };"
     );
-    console.log(returnTxt);
-    console.log(disk);
+    //console.log(returnTxt);
+    //console.log(disk);
+    return true;
   }
 }
 function currentDir() {
   var p = currentPath.split(".");
   var cd = disk;
-  console.log(p);
-  console.log(cd);
+  //console.log(p);
+  //console.log(cd);
   var canNav = true;
   for (var i = 0; i < p.length; i++) {
-    console.log(p[i]);
-    console.log(cd[p[i].toLowerCase()]);
+    //console.log(p[i]);
+    //console.log(cd[p[i].toLowerCase()]);
     if (cd.hasOwnProperty([p[i].toLowerCase()])) cd = cd[p[i].toLowerCase()];
     else {
       canNav = false;
     }
   }
   if (!canNav) return "cannotNavigate";
-  console.log(cd);
+  //console.log(cd);
   return cd;
 }
 var Commands = {
@@ -90,10 +91,13 @@ var Commands = {
       var a = Object.getOwnPropertyNames(currentDir());
       var rslt = "All files in the current directory: ";
       for (var i = 0; i < a.length; i++) {
-        if (a[i] != "name") {
+        if (a[i] != "name" && a[i] != "type" && a[i] != "data") {
           rslt += "<br>" + a[i];
           if (isObject(currentDir()[a[i]])) {
-            if (currentDir()[a[i]].hasOwnProperty("type"))
+            if (
+              currentDir()[a[i]].hasOwnProperty("type") &&
+              currentDir()[a[i]]["type"] != "folder"
+            )
               rslt += "." + currentDir()[a[i]]["type"];
           }
         }
@@ -111,12 +115,35 @@ var Commands = {
         return "The name cannot contain any of the following characters: '.', ',', ':'.";
       if (p[1].includes(".") || p[1].includes(",") || p[1].includes(":"))
         return "The type cannot contain any of the following characters: '.', ',', ':'.";
-      var rslt = "";
+      var rslt = "Failed to create file.";
       //if (p[2] === "folder") {
       //disk[currentDir()[p[2]]] = { name: p[2] };
       var f = { name: p[2], type: p[1] };
-      AddFile(f);
+      if (AddFile(f)) rslt = "Successfully created " + p[2] + "." + p[1];
+      return rslt;
       //}
+    }
+  },
+  run: {
+    call: function(p) {
+      if (!currentDir().hasOwnProperty(p[1]))
+        return "Could not find the file specified";
+      if (
+        currentDir()[p[1]].type === "folder" ||
+        currentDir()[p[1]].type === undefined
+      )
+        return "Invalid file format";
+      //try to find an application that supports this file format
+      var supported = AppF.Supported(currentDir()[p[1]].type);
+      if (supported.length > 0) {
+      } else {
+        return (
+          "There are no apps that support the ." +
+          currentDir()[p[1]].type +
+          " file format."
+        );
+      }
+      return "Running file (" + p[1] + "." + currentDir()[p[1]].type + ")";
     }
   }
 };
@@ -159,3 +186,4 @@ function Call(str) {
   document.getElementById("input").value = displayPath + ")> ";
   return;
 }
+Window();

@@ -7,17 +7,23 @@
     <title>Virtual OS</title>
   </head>
   <body>
-    <div id="output"></div>
-    <input
-      id="input"
-      onkeypress="KeyPress(event)"
-      onkeydown="KeyDown()"
-      onkeyup="KeyDown()"
-    />
+    <div id="main">
+      <div id="terminal">
+        <div id="output"></div>
+        <input
+          id="input"
+          onkeypress="KeyPress(event)"
+          onkeydown="KeyDown()"
+          onkeyup="KeyDown()"
+        />
+      </div>
+    </div>
     <script>
       document.getElementById("input").focus();
     </script>
   </body>
+  <script src="windows.js"></script>
+  <scirpt src="applications.js"></scirpt>
   <script src="Directory.js"></script>
   <script src="code.js"></script>
 </html>
